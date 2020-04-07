@@ -19,8 +19,16 @@ byte * init_vector() {
 
 }
 
+/**
+ * Функция, осуществляющая зашифрование открытого текста на основе ключа
+ *
+ * @param key           Ключ зашифрования
+ * @param plain         Открытый текст
+ * @param length        Длина открытого текста
+ * @return derived_key  Зашифрованный текст
+ */
 template <size_t n>
-void cs_encrypt(const byte* key, const byte* plain) {
+void cs_encrypt(const byte* key, const byte* plain, const size_t length) {
     byte* init_vector;
     byte* derived_key = g_function<n>(key, init_vector);
 
