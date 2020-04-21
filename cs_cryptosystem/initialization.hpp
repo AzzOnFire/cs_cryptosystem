@@ -1,10 +1,29 @@
 #pragma once 
-#include "sha256.hpp"
-#include "multiplication.hpp"
+#include "sha256.h"
+#include "multiply256.h"
 #include <cstring>
+#include <random>
+#include <iostream>
+#include <tuple>
 
 #define SIZE_HASH 64 // in bytes
 using namespace std;
+
+
+/**
+* Uniform distribution random number generator
+* 
+* See here -> https://ru.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
+*
+* @param begin                                      Start of line
+* @param end                                        End of line
+*
+* @return tuple (mt19937, iform_real_distribution)  Needed to generate numbers
+*/
+tuple<mt19937,uniform_real_distribution<>> generate_uniform_real_distribution(int begin,int end){
+    std::random_device rd;
+    return make_tuple(mt19937(rd()),uniform_real_distribution<> (begin, end)); 
+}
 
 /**
 * Function generating the key k = (a, b), where a, b from GF (2 ^ n) is randomly selected
@@ -17,14 +36,16 @@ byte * generate_key()
 {
     const size_t key_length = n/4;
     auto key = new int[key_length];
-
+    mt19937 rd;
+    uniform_real_distribution urd;
+    tie(rd,urd) = generate_uniform_real_distribution(0,10);
+    
     for(size_t index = 0; index < key_length; ++index)
-        // not an equiprobable choice, you must implement an equiprobable choice
-        key[index] = rand(); 
+        key[index] = urd(rd);
+    
         
     return (byte *)key;
 };
-
 
 /**
  * A function that generates a derivative key based on complicated Bose formulas (10)
@@ -43,8 +64,6 @@ byte * create_complex_derived_key(const byte* key, const byte* init_vector) {
  * The structure defines the initialization vector and the data associated with it
  * Must be stored: object counter, time stamp, attributes of the transmitted message
  * (Title, address of the sender / receiver, secrecy stamp, etc.)
- * 
- * TODO: Make vector generation independent of text
  */
 template <size_t n>
 struct IV
@@ -89,9 +108,13 @@ int IV<n>::get_count()
  */
 void expand_init_vector(byte* key, const size_t length, const size_t differ)
 {
+    mt19937 rd;
+    uniform_real_distribution urd;
+    tie(rd,urd) = generate_uniform_real_distribution(0,10);
+
     for(size_t index = length; index < length + differ; index+=SIZE_HASH)
     {
-        auto additional_hash =  sha256(to_string(rand()));
+        auto additional_hash =  sha256(to_string(urd(rd)));
         additional_hash.copy((char*)key + index,SIZE_HASH);
     }
 }
