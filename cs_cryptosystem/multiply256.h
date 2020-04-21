@@ -1,1 +1,0 @@
-char* multiply256(char* arg1, char* arg2);
