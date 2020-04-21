@@ -36,14 +36,12 @@ byte * generate_key()
 {
     const size_t key_length = n/4;
     auto key = new int[key_length];
-    mt19937 rd;
-    uniform_real_distribution urd;
-    tie(rd,urd) = generate_uniform_real_distribution(0,10);
+    auto [rd,urd] = generate_uniform_real_distribution(0,10);
     
-    for(size_t index = 0; index < key_length; ++index)
+    for(size_t index = 0; index < key_length; ++index){
         key[index] = urd(rd);
+    }
     
-        
     return (byte *)key;
 };
 
@@ -108,9 +106,7 @@ int IV<n>::get_count()
  */
 void expand_init_vector(byte* key, const size_t length, const size_t differ)
 {
-    mt19937 rd;
-    uniform_real_distribution urd;
-    tie(rd,urd) = generate_uniform_real_distribution(0,10);
+    auto [rd,urd] = generate_uniform_real_distribution(0,10);
 
     for(size_t index = length; index < length + differ; index+=SIZE_HASH)
     {
