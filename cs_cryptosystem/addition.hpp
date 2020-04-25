@@ -4,11 +4,11 @@
 
 
 /**
- * ‘ункци€, осуществл€юща€ операцию XOR над двум€ блоками размера 2^n бит
+ * Perform XOR operation with two arguments with size 2^n bit
  *
- * @param first     ѕервый аргумент, хранит в себе результат
- * @param second    ¬торой аргумент
- * @return first    –езультат операции XOR, накопленный в первом аргументе
+ * @param first     First argument, result
+ * @param second    Second argument
+ * @return first    Result of XOR operation, accumulated in first argument
  */
 template <size_t n>
 inline byte* addition(byte* first, byte* second) {
@@ -21,12 +21,12 @@ inline byte* addition(byte* first, byte* second) {
 
 
 /**
- * ‘ункци€, осуществл€юща€ операцию XOR над трем€ блоками размера 2^n бит
+ * Perform XOR operation with three arguments with size 2^n bit
  *
- * @param first     ѕервый аргумент, хранит в себе результат
- * @param second    ¬торой аргумент
- * @param third     “ретий аргумент
- * @return first    –езультат операции XOR, накопленный в первом аргументе
+ * @param first     First argument, result
+ * @param second    Second argument
+ * @param third     Third argument
+ * @return first    Result of XOR operation, accumulated in first argument
  */
 template <size_t n>
 inline byte* addition(byte* first, const byte* second, const byte* third) {

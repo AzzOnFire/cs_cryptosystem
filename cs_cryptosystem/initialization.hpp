@@ -1,48 +1,32 @@
 #pragma once 
-#include "sha256.h"
-#include "multiply256.h"
-#include <cstring>
-#include <random>
-#include <iostream>
-#include <tuple>
+
+#include "defines.hpp"
+#include "sha256.hpp"
+#include "multiplication.hpp"
 
 #define SIZE_HASH 64 // in bytes
-using namespace std;
 
 
 /**
-* Uniform distribution random number generator
-* 
-* See here -> https://ru.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
-*
-* @param begin                                      Start of line
-* @param end                                        End of line
-*
-* @return tuple (mt19937, iform_real_distribution)  Needed to generate numbers
-*/
-tuple<mt19937,uniform_real_distribution<>> generate_uniform_real_distribution(int begin,int end){
-    std::random_device rd;
-    return make_tuple(mt19937(rd()),uniform_real_distribution<> (begin, end)); 
-}
-
-/**
-* Function generating the key k = (a, b), where a, b from GF (2 ^ n) is randomly selected
+* Function generating the key k = (a, b), where a, b from GF (2 ^ n) are randomly selected
 * !Memory is allocated!
 *
 * @return key Encryption key
  */
 template <size_t n>
-byte * generate_key() 
-{
-    const size_t key_length = n/4;
-    auto key = new int[key_length];
-    auto [rd,urd] = generate_uniform_real_distribution(0,10);
+byte * generate_key() {
+    const size_t key_size = 2 * n;
+
+    byte * key = new byte[bits_to_bytes(key_size)];
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<uint64_t> dis(0, ULLONG_MAX);
     
-    for(size_t index = 0; index < key_length; ++index){
-        key[index] = urd(rd);
+    for(size_t i = 0; i < bits_to_qword(key_size); ++i){
+        ((uint64_t *)key)[i] = dis(gen);
     }
     
-    return (byte *)key;
+    return key;
 };
 
 /**
@@ -63,10 +47,11 @@ byte * create_complex_derived_key(const byte* key, const byte* init_vector) {
  * Must be stored: object counter, time stamp, attributes of the transmitted message
  * (Title, address of the sender / receiver, secrecy stamp, etc.)
  */
+// TODO struct must not contain any methods. And store plain_text is unnecessary
 template <size_t n>
 struct IV
 {
-    static int count_iv;
+    /*static int count_iv;
     string plain_text;
 
     IV(string text)
@@ -75,26 +60,8 @@ struct IV
         count_iv++;
     };
 
-    int get_count();
-    byte* init_vector();
+    byte* init_vector();*/
 };
-
-
-/**
- * Initialization vector counter
- */
-template <size_t n>
-int IV<n>::count_iv = 0;
-
-
-/**
- * Get the serial number of the initialization vector
- */
-template <size_t n>
-int IV<n>::get_count()
-{
-    return count_iv;
-}
 
 /**
  * Function for "expanding" the hash in the case when the length of the initialization vector is more than 512 bits, which
@@ -104,14 +71,17 @@ int IV<n>::get_count()
  * @param length    Number of bytes filled in the initialization vector
  * @param deffir    The number of bytes to be filled with hashes
  */
-void expand_init_vector(byte* key, const size_t length, const size_t differ)
-{
-    auto [rd,urd] = generate_uniform_real_distribution(0,10);
+template <size_t n>
+void expand_init_vector(byte* key, const size_t length, const size_t differ) {
 
-    for(size_t index = length; index < length + differ; index+=SIZE_HASH)
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<uint64_t> dis(0, ULLONG_MAX);
+
+    for(size_t i = length; i < length + differ; i+=SIZE_HASH)
     {
-        auto additional_hash =  sha256(to_string(urd(rd)));
-        additional_hash.copy((char*)key + index,SIZE_HASH);
+        auto additional_hash =  sha256(std::to_string(dis(gen)));
+        additional_hash.copy((char*)key + i,SIZE_HASH);
     }
 }
 
@@ -121,9 +91,9 @@ void expand_init_vector(byte* key, const size_t length, const size_t differ)
  *
  * @return iv Initialization vector
  */
+/*
 template<size_t n>
-byte* IV<n>::init_vector()
-{
+byte* IV<n>::init_vector() {
     const string text_for_hash = plain_text + to_string(count_iv);
     const string hash = sha256(text_for_hash);
 
@@ -140,28 +110,7 @@ byte* IV<n>::init_vector()
     
     return iv;
 }
-
-/**
- * Function - XOR implementation of two byte arrays
- *
- * @param left_arr  Pointer to the beginning of the first number (byte array)
- * @param right_arr Pointer to the beginning of the second number
- * @return res      XOR of two byte arrays left_arr right_arr
- */
-template<size_t n>
-byte* xor_arrays(byte* left_arr, byte* right_arr)
-{
-    size_t length = n/8;
-	byte* res = new byte[length]; 
-	
-	for(size_t index = 0; index < length; ++index)
-	{
-        char xor_left_right = left_arr[index] ^ right_arr[index];
-        res[index] = xor_left_right;
-    }
-    
-    return res;
-}
+*/
 
 /**
  * A function that generates a derivative key based on the Bowes formulas (8), (9)
@@ -177,6 +126,8 @@ byte* create_derived_key(const byte* key, const byte* init_vector) {
 
     byte* iterative_derived_key = new byte[length_derived_key];
 
+    // TODO create struct Derived Key. At least, make memory allocation only once, not six times
+    // Code is unreadable
     byte* left_part_iterative_derived_key = new byte[length_part_derived_key];
     byte* right_part_iterative_derived_key = new byte[length_part_derived_key];
 
@@ -191,16 +142,16 @@ byte* create_derived_key(const byte* key, const byte* init_vector) {
 
     memcpy(left_part_init_vector, init_vector, length_part_derived_key);
     memcpy(right_part_init_vector, init_vector + length_part_derived_key, length_part_derived_key);
-
+    /*
     left_part_iterative_derived_key = xor_arrays<n>(left_part_elementary_derived_key, left_part_init_vector);
     right_part_iterative_derived_key = xor_arrays<n>(right_part_elementary_derived_key, right_part_init_vector);
 
-    left_part_iterative_derived_key = Multiply<n>(left_part_init_vector, left_part_iterative_derived_key);
-    right_part_iterative_derived_key = Multiply<n>(right_part_init_vector, right_part_iterative_derived_key);
+    left_part_iterative_derived_key = multiplication<n>(left_part_init_vector, left_part_iterative_derived_key);
+    right_part_iterative_derived_key = multiplication<n>(right_part_init_vector, right_part_iterative_derived_key);
 
     left_part_iterative_derived_key = xor_arrays<n>(left_part_iterative_derived_key, right_part_init_vector);
     right_part_iterative_derived_key = xor_arrays<n>(right_part_iterative_derived_key, left_part_init_vector);
-
+    */
     memcpy(iterative_derived_key, left_part_iterative_derived_key, length_part_derived_key);
     memcpy(iterative_derived_key + length_part_derived_key, right_part_iterative_derived_key, length_part_derived_key);
    

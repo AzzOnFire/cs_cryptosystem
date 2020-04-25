@@ -34,7 +34,7 @@ constexpr unsigned long long Polynom(size_t n)
 * @return Binary vector representing composition of elements
 */
 template <size_t n>
-byte* Multiply(byte* a, byte* b)
+byte* multiplication(byte* a, byte* b)
 {
 	unsigned long long poly = Polynom(n);
 	constexpr int lenght = n / 64;

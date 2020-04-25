@@ -6,3 +6,7 @@
 #include <cstring>
 #include <fstream>
 #include <string>
+#include <random>
+#include <tuple>
+#include <memory>
+#include <stdio.h>

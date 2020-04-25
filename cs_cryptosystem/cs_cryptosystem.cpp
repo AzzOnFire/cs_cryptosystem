@@ -1,11 +1,6 @@
 ﻿#include "stdafx.h"
 
-#include "initializations.hpp"
-#include <map>
-#include <vector>
-#include <iostream>
-
-using namespace std;
+#include "initialization.hpp"
 
 int main() {
     std::cout << "Hello World!\n";
