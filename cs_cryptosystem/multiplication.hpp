@@ -28,7 +28,7 @@ constexpr unsigned long long Polynom(size_t n)
 * Multiplies Galois field elements
 * Available field sizes: 2^64, 2^128, 2^256, 2^512
 *
-* @param a Binary vectors representing first factor
+* @param a Binary vectors representing first factor, used to save the result
 * @param b Binary vectors representing second factor
 *
 */
