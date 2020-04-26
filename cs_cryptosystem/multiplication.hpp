@@ -31,21 +31,24 @@ constexpr unsigned long long Polynom(size_t n)
 * @param a Binary vectors representing first factor
 * @param b Binary vectors representing second factor
 *
-* @return Binary vector representing composition of elements
 */
 template <size_t n>
 byte* multiplication(byte* a, byte* b)
 {
-	unsigned long long poly = Polynom(n);
+	constexpr unsigned long long poly = Polynom(n);
 	constexpr int lenght = n / 64;
 
-	unsigned long long* result = new unsigned long long[lenght];
-	unsigned long long* num1 = (unsigned long long*)a;
+	unsigned long long* result = (unsigned long long*)a;
 	unsigned long long* num2 = (unsigned long long*)b;
+
+	unsigned long long num1[lenght];
 	
 	for (int i = 0; i < lenght; ++i)
+	{
+		num1[i] = result[i];
 		result[i] = 0;
-
+	}
+	
 	for (int i = lenght - 1; i >= 0; --i)
 	{
 		for (unsigned long long bit = 0x8000000000000000; bit > 0; bit >>= 1)
