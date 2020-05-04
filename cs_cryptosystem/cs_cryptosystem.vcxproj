@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="algorithm.hpp" />
     <ClInclude Include="defines.hpp" />
+    <ClInclude Include="dispersingtransform.hpp" />
     <ClInclude Include="initialization.hpp" />
     <ClInclude Include="multiplication.hpp" />
     <ClInclude Include="sha256.hpp" />

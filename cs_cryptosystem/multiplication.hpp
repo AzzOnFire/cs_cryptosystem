@@ -33,7 +33,7 @@ constexpr unsigned long long Polynom(size_t n)
 *
 */
 template <size_t n>
-byte* multiplication(byte* a, byte* b)
+void multiplication(byte* a, byte* b)
 {
 	constexpr unsigned long long poly = Polynom(n);
 	constexpr int lenght = n / 64;
@@ -80,6 +80,4 @@ byte* multiplication(byte* a, byte* b)
 					result[j] ^= num1[j];
 		}
 	}
-
-	return (byte*)result;
 }
