@@ -3,9 +3,10 @@
 #include "../cs_cryptosystem/addition.hpp"
 #include "utils.hpp"
 
-constexpr size_t n = 64;
 
 TEST(Addition, Two_Numbers) {
+    constexpr size_t n = 64;
+
     const size_t length = bits_to_bytes(n);
 
     byte* number_1 = new byte[length]{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77 };
@@ -23,6 +24,8 @@ TEST(Addition, Two_Numbers) {
 
 
 TEST(Addition, Three_Numbers) {
+    constexpr size_t n = 64;
+
     const size_t length = bits_to_bytes(n);
 
     byte* number_1 = new byte[length]{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77 };

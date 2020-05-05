@@ -149,18 +149,20 @@
   <ItemGroup>
     <ClCompile Include="algorithm.cpp" />
     <ClCompile Include="cs_cryptosystem.cpp" />
-    <ClCompile Include="initialization.cpp" />
+    <ClCompile Include="iv.cpp" />
+    <ClCompile Include="keys.cpp" />
     <ClCompile Include="multiplication.cpp" />
     <ClCompile Include="addition.cpp" />
-    <ClCompile Include="sha256.cpp" />
+    <ClCompile Include="quasi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm.hpp" />
     <ClInclude Include="defines.hpp" />
+    <ClInclude Include="keys.hpp" />
     <ClInclude Include="dispersingtransform.hpp" />
-    <ClInclude Include="initialization.hpp" />
+    <ClInclude Include="iv.hpp" />
     <ClInclude Include="multiplication.hpp" />
-    <ClInclude Include="sha256.hpp" />
+    <ClInclude Include="quasi.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="addition.hpp" />
   </ItemGroup>

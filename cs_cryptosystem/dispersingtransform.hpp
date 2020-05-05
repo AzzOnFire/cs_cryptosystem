@@ -50,12 +50,12 @@ constexpr char* GetCoeffs(size_t n)
 * Available block sizes: 64, 128, 256, 512
 *
 * @param block Binary block of data, used to save the result
-*
+* @return block Binary block of dispersed data
 */
 template <size_t n>
-void disperse(char* block)
+char* disperse(char* block)
 {
-	constexpr len = n / 8;
+	constexpr size_t len = n / 8;
 	constexpr char* coeffs = GetCoeffs(n);
 
 	for (int i = 0; i < len; ++i)
@@ -69,4 +69,6 @@ void disperse(char* block)
 
 		block[len - 1] = last;
 	}
+
+	return block;
 }

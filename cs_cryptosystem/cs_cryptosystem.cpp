@@ -1,7 +1,5 @@
 ﻿#include "stdafx.h"
 
-#include "initialization.hpp"
-
 int main() {
     std::cout << "Hello World!\n";
 
