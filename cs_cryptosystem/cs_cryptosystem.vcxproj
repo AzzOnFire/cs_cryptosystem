@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="algorithm.cpp" />
+    <ClCompile Include="constants.cpp" />
     <ClCompile Include="cs_cryptosystem.cpp" />
     <ClCompile Include="iv.cpp" />
     <ClCompile Include="keys.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm.hpp" />
+    <ClInclude Include="constants.hpp" />
     <ClInclude Include="defines.hpp" />
     <ClInclude Include="keys.hpp" />
     <ClInclude Include="dispersingtransform.hpp" />

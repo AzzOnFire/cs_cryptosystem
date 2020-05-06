@@ -4,7 +4,7 @@
 #include <random>
 #include <time.h>
 
-#define iv_additional_size(n) (bits_to_bytes(2 * n) - 2 * sizeof(uint64_t))
+#define iv_additional_size(n) (2*(bits_to_bytes(n) - sizeof(uint64_t)))
 
 
 /**

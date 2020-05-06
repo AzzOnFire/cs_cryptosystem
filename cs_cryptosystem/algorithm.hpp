@@ -5,49 +5,10 @@
 #include "addition.hpp"
 #include "dispersingtransform.hpp"
 #include "quasi.hpp"
+#include "iv.hpp"
+#include "keys.hpp"
+#include "constants.hpp"
 
-
-/**
-* Who write that function, don't forget to write comment (͡° ͜ʖ ͡°)
-*/
-template <size_t n>
-byte* f_function(byte* w, const byte* derived_key) {
-    const byte* a_key = derived_key;
-    const byte* b_key = derived_key + bits_to_bytes(n);
-
-    return quasi<n>(disperse<n>(quasi<n>(w, a_key), b_key));
-}
-
-/**
-* Who write that function, don't forget to write comment (͡° ͜ʖ ͡°)
-*/
-template <size_t n>
-byte* phi_function(byte* w_tau, const byte* a) {
-    return addition<n>(w_tau, a);
-}
-
-template <size_t n>
-byte* fill_w_array(const size_t length, const size_t shift) {
-    byte* w_array = new byte[bits_to_bytes(n) * length];
-
-
-    for (size_t i = 0; i < bits_to_bytes(n) * length; i += bits_to_bytes(n)) {
-        w_array[i + bits_to_bytes(n) - 1] = i + shift;
-    }
-
-    return w_array;
-}
-
-template <size_t n>
-byte* fill_w_tau_array(byte * w_array, const size_t length, const size_t derived_key) {
-    const byte* a = new byte[bits_to_bytes(n)];
-
-    for (size_t i = 0; i < bits_to_bytes(n) * length; i += bits_to_bytes(n)) {
-        f_function<n>(w_array + i, derived_key);
-    }
-
-    return w_array;
-}
 
 /**
  * Encrypt plain text with encryption key
@@ -61,9 +22,10 @@ template <size_t n>
 byte* cs_encrypt(const byte* key, const byte* plain, const size_t length) {
     byte* cypher = new byte[length + bits_to_bytes(n)];
 
-    byte* iv;
-    byte* derived_key = nullptr;
-    byte* w_array = fill_w_array<n>(length, 10);
+    IV<n> * iv = new IV<n>{};
+    byte* derived_key = create_derived_key<n>(key, iv);
+
+    byte* w_array = fill_w_array<n>(length, 0x42);
     byte* w_tau_array = fill_w_tau_array<n>(w_array, length, derived_key);
     byte* phi_w_tau_array = nullptr;
 

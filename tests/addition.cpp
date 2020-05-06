@@ -4,7 +4,7 @@
 #include "utils.hpp"
 
 
-TEST(Addition, Two_Numbers) {
+TEST(Addition, Two_Numbers_64) {
     constexpr size_t n = 64;
 
     const size_t length = bits_to_bytes(n);
@@ -23,7 +23,7 @@ TEST(Addition, Two_Numbers) {
 }
 
 
-TEST(Addition, Three_Numbers) {
+TEST(Addition, Three_Numbers_64) {
     constexpr size_t n = 64;
 
     const size_t length = bits_to_bytes(n);
