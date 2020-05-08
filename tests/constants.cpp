@@ -71,7 +71,6 @@ TEST(W_tau_constants, Create_64) {
 }
 
 
-
 TEST(W_tau_constants, Create_128) {
     constexpr size_t n = 128;
     constexpr size_t length = 10;
@@ -89,7 +88,6 @@ TEST(W_tau_constants, Create_128) {
 }
 
 
-
 TEST(W_tau_constants, Create_256) {
     constexpr size_t n = 256;
     constexpr size_t length = 10;
@@ -105,7 +103,6 @@ TEST(W_tau_constants, Create_256) {
 
     //print_byte_array(w_array, bits_to_bytes(n) * length);
 }
-
 
 
 TEST(W_tau_constants, Create_512) {

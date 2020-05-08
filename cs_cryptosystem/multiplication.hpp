@@ -7,7 +7,7 @@
  * use flag g++ -std=c++17 or g++ -std=c++14
  */
 
-constexpr unsigned long long Polynom(size_t n)
+constexpr uint64_t Polynom(size_t n)
 {
 	switch (n)
 	{
@@ -33,30 +33,24 @@ constexpr unsigned long long Polynom(size_t n)
 *
 */
 template <size_t n>
-void multiplication(byte* a, byte* b)
-{
-	constexpr unsigned long long poly = Polynom(n);
-	constexpr int lenght = n / 64;
+byte* multiplication(byte* a, const byte* b) {
+	constexpr uint64_t poly = Polynom(n);
+	constexpr int length = bits_to_qword(n);
 
-	unsigned long long* result = (unsigned long long*)a;
-	unsigned long long* num2 = (unsigned long long*)b;
+	uint64_t* result = (uint64_t*)a;
+	const uint64_t* num2 = (uint64_t*)b;
 
-	unsigned long long num1[lenght];
+	uint64_t num1[length];
 	
-	for (int i = 0; i < lenght; ++i)
-	{
+	for (size_t i = 0; i < length; ++i) {
 		num1[i] = result[i];
 		result[i] = 0;
 	}
 	
-	for (int i = lenght - 1; i >= 0; --i)
-	{
-		for (unsigned long long bit = 0x8000000000000000; bit > 0; bit >>= 1)
-		{
-			if (result[lenght - 1] & 0x8000000000000000)
-			{
-				for (int j = lenght - 1; j > 0; --j)
-				{
+	for (int i = length - 1; i >= 0; --i) {
+		for (uint64_t bit = 0x8000000000000000; bit > 0; bit >>= 1) {
+			if (result[length - 1] & 0x8000000000000000) {
+				for (size_t j = length - 1; j > 0; --j) {
 					result[j] <<= 1;
 					if (result[j - 1] & 0x8000000000000000)
 						result[j] |= 1;
@@ -64,10 +58,8 @@ void multiplication(byte* a, byte* b)
 				result[0] <<= 1;
 				result[0] ^= poly;
 			}
-			else
-			{
-				for (int j = lenght - 1; j > 0; --j)
-				{
+			else {
+				for (int j = length - 1; j > 0; --j) {
 					result[j] <<= 1;
 					if (result[j - 1] & 0x8000000000000000)
 						result[j] |= 1;
@@ -76,8 +68,10 @@ void multiplication(byte* a, byte* b)
 			}
 
 			if (bit & num2[i])
-				for (int j = 0; j < lenght; ++j)
+				for (int j = 0; j < length; ++j)
 					result[j] ^= num1[j];
 		}
 	}
+
+	return (byte*)result;
 }

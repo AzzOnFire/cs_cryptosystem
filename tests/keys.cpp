@@ -56,7 +56,6 @@ TEST(Shared_Key, Create_512) {
 }
 
 
-
 TEST(Derived_Key, Create_64) {
     constexpr size_t n = 64;
     constexpr size_t d_key_length = bits_to_bytes(n) * 2;

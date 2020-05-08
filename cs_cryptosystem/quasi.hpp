@@ -3,7 +3,9 @@
 #include "defines.hpp"
 
 /*
-JUST STUPID XOR
+* JUST XOR
+*
+* TODO make it right
 */
 template<size_t n>
 byte* quasi(byte* first, const byte* second) {

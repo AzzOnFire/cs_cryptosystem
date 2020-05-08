@@ -11,7 +11,7 @@
  * @return first    Result of XOR operation, accumulated in first argument
  */
 template <size_t n>
-inline byte* addition(byte* first, byte* second) {
+inline byte* addition(byte* first, const byte* second) {
     for (size_t i = 0; i < bits_to_qword(n); ++i) {
         *((uint64_t*)first) ^= *((uint64_t*)second);
     }

@@ -150,6 +150,7 @@
     <ClCompile Include="algorithm.cpp" />
     <ClCompile Include="constants.cpp" />
     <ClCompile Include="cs_cryptosystem.cpp" />
+    <ClCompile Include="disperse.cpp" />
     <ClCompile Include="iv.cpp" />
     <ClCompile Include="keys.cpp" />
     <ClCompile Include="multiplication.cpp" />
@@ -161,7 +162,7 @@
     <ClInclude Include="constants.hpp" />
     <ClInclude Include="defines.hpp" />
     <ClInclude Include="keys.hpp" />
-    <ClInclude Include="dispersingtransform.hpp" />
+    <ClInclude Include="disperse.hpp" />
     <ClInclude Include="iv.hpp" />
     <ClInclude Include="multiplication.hpp" />
     <ClInclude Include="quasi.hpp" />

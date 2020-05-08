@@ -30,8 +30,7 @@ byte* g_function(byte* iv, const byte* key) {
 
 
 /**
-* Function generating the key k = (a, b), where a, b from GF (2 ^ n) are randomly selected
-* !Memory is allocated!
+* Function generating the key k = (a, b), where a, b from GF (2 ^ n) are randomly distributed
 *
 * @return key Encryption key
  */
@@ -53,8 +52,7 @@ byte* create_key() {
 
 
 /**
- * A function that generates a derivative key based on initialization vector and key
- * !Memory is allocated!
+ * A function that generates a derived key based on initialization vector and key
  *
  * @param key           Encryption key
  * @param iv            Initialization vector

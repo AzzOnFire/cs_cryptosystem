@@ -37,6 +37,7 @@
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common.cpp" />
     <ClCompile Include="constants.cpp" />
     <ClCompile Include="iv.cpp" />
     <ClCompile Include="keys.cpp" />

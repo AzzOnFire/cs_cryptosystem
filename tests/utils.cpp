@@ -7,7 +7,7 @@
 
 void print_byte_array(byte* array, size_t length) {
     for (size_t i = 0; i < length; ++i) {
-        printf("%x ", array[i] & 0xff);
+        printf("%02x ", array[i] & 0xff);
     }
 
     printf("\n");
