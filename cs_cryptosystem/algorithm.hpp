@@ -37,14 +37,18 @@ void encrypt_block(byte* block, const byte* a_key, const byte* b_key, byte* w_ta
  * @return cypher   Encrypted text
  */
 template <size_t n>
-byte* cs_encrypt(const byte* key, IV<n> * iv, const byte* phi_constant, const byte* plain, const size_t length) {
+byte* cs_encrypt(const byte* key, const IV<n> * iv, const byte* phi_constant, const byte* plain, const size_t length) {
     byte* cypher = new byte[length + bits_to_bytes(n)];
+    memcpy(cypher, plain, length);
+
+    IV<n>* temp_iv = (IV<n>*)new byte[sizeof(IV<n>)];
+    memcpy(temp_iv, iv, sizeof(IV<n>));
 
     byte* w_array = new byte[length * bits_to_bytes(n)];
     byte* w_tau_array = w_array;
     byte* phi_w_tau_array = new byte[length * bits_to_bytes(n)];
 
-    byte* derived_key = create_derived_key<n>(key, iv);
+    byte* derived_key = create_derived_key<n>(key, temp_iv);
 
     fill_w_array<n>(w_array, length, 0x42);
     fill_w_tau_array<n>(w_tau_array, length, derived_key);
